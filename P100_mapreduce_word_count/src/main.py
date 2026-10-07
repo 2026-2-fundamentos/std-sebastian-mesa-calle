@@ -43,7 +43,7 @@ for file in glob.glob(f"{DATA_FOLDER}/*"):
             f2.write(text)
 
 
-
+print("     ")
 
 start_time = time.time()
 
