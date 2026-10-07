@@ -47,7 +47,6 @@ jobs:
           python - <<'PY'
           import json
           import os
-          import re
           import subprocess
           import sys
 
@@ -71,14 +70,14 @@ jobs:
           # Activity discovery
           # -----------------------------------------------------
 
-          activity_pattern = re.compile(r"^[PL]\d{3}_")
+          activity_prefixes = ("P", "L")
 
           activities = sorted(
               (
                   directory
                   for directory in repository_root.iterdir()
                   if directory.is_dir()
-                  and activity_pattern.match(directory.name)
+                  and directory.name.startswith(activity_prefixes)
                   and (directory / "tests").is_dir()
               ),
               key=lambda directory: directory.name,
@@ -192,8 +191,8 @@ jobs:
                       "❌ No valid activity directories were found.\n\n"
                   )
                   file.write(
-                  "An activity must follow the `Pxxx_*` or `Lxxx_*` "
-                  "convention and contain `src/` and `tests/`.\n"
+                      "An activity must start with `P` or `L` "
+                      "and contain `src/` and `tests/`.\n"
                   )
               else:
                   file.write("| Activity | Result |\n")
